@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import Auxilary from '../../hoc/Auxilary';
+import Auxilary from '../../hoc/Auxilary/Auxilary';
 import Burger from '../../components/Burger/Burger';
 import BuildControls from '../../components/Burger/BuildControls/BuildControls';
 import Modal from '../../components/UI/Modal/Modal';
@@ -73,6 +73,13 @@ const BurgerBuilder = props => {
         updatePurchaseState(updatedIngredients);
     };
 
+    const purchaseCancelhandler = () => {
+        setPurchasing(false);
+    }
+
+    const purchaseContinueHandler = () => {
+        console.log("order continued!");
+    };
     const disabledInfo = {...ingredients};
 
     for(let key in disabledInfo){
@@ -81,8 +88,8 @@ const BurgerBuilder = props => {
 
     return (
     <Auxilary>
-        <Modal show={purchasing}>
-            <OrderSummary ingredients={ingredients}/>
+        <Modal show={purchasing} modalClosed={purchaseCancelhandler}>
+            <OrderSummary totalPrice={totalPrice} purchaseContinued={purchaseContinueHandler} purchaseCancelled={purchaseCancelhandler} ingredients={ingredients}/>
         </Modal>
         <Burger ingredients={ingredients}/>
         <BuildControls ordered={purchaseHandler} purchasable={purchasable} price={totalPrice} disabled={disabledInfo} ingredientAdded={addIngredientHandler} ingredientRemoved={removeIngredientHandler}/>
