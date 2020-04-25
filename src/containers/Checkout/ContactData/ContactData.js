@@ -4,7 +4,7 @@ import classes from './ContactData.module.css';
 import axios from '../../../axios-order';
 import Spinner from '../../../components/UI/Spinner/Spinner';
 import Input from '../../../components/UI/Input/Input';
-
+import {connect} from 'react-redux';
 
 const ContactData = props => {
     const [loadingState, setLoadingState] = useState(false);
@@ -110,7 +110,6 @@ const ContactData = props => {
 
     const orderHandler = (e)=>{
         e.preventDefault();
-        console.log(props.ingredients);
 
         setLoadingState(true);
 
@@ -121,8 +120,8 @@ const ContactData = props => {
         }
 
         const order = {
-            igdts:props.ingredients,
-            price:+props.price,
+            igdts:props.ings,
+            price:+props.totalPrice,
             orderData:formData
         }
         axios.post('/orders.json',order)
@@ -185,4 +184,10 @@ const ContactData = props => {
     );
 }
 
-export default ContactData;
+const mapStateToProps = state => {
+    return {
+        ings:state.ingredients,
+        totalPrice:state.totalPrice
+    }
+}
+export default connect(mapStateToProps)(ContactData);
